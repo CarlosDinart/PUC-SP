@@ -1,0 +1,98 @@
+import turtle
+from turtle import *
+t = turtle.Screen()  # cria uma janela gráfica
+
+def Matriz():
+    return [[1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],\
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1],\
+            [1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1],\
+            [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0],\
+            [0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0],\
+            [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1],\
+            [0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1],\
+            [0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],\
+            [0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1],\
+            [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1],\
+            [0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0],\
+            [1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0],\
+            [1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0],\
+            [0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1],\
+            [0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1],\
+            [0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],\
+            [1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1],\
+            [1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1],\
+            [1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0],\
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0]]
+
+# Dados da matriz:
+
+matriz = Matriz()
+tam_matriz = len(matriz)
+meio_matriz = tam_matriz //2
+print(meio_matriz)
+lin = len(matriz[:])
+col = len(matriz[:])
+tam_celula = 20
+
+# Cria uma tela do Turtle 
+
+def criar_labirinto(p1=420, p2=420, p3=370, p4=1):
+
+    tracer(False)
+    bgcolor('red')       # pinta todas as celulas de preto # define a cor de fundo da janela
+    hideturtle()         # esta funcao ela escondera a tartaruga desnho da tela;
+    t.setup(p1, p2, p3, p4)  # definir a largura e altura da tela - p1 = comprimento, p2 = altura, p3= startx , p4 = starty
+    #tam_matriz = len(matriz)
+
+    for lin in range(tam_matriz):
+        for col in range(tam_matriz):   # Este comando de repeticao percorre toda matriz lendo os
+            print(lin, col)             # indices dos elementos da matriz(lin, col);
+            xt, yt = em_coord_turtle(lin, col)  #obs: I) sicronizar os pontos da cordenadas tutles com os indices da matriz
+            print(xt, yt)
+            if (matriz[lin] [col] == 1):              # II) xt, yt = em coordanda turltle (lin, col) -
+                desenhar_celula(xt, yt, "blue")        # matriz [lin] [col] matriz sera acessada por
+                                                        #esta funcao de sicronizacao dos indices com as
+                                                        # coordenadas turtle, retornar xt= col , yt= lin
+                                                        # retornar o valor da refencia da celular
+
+    update()
+
+
+def desenhar_celula(xt, yt, cor):
+
+    """Dada uma coordenada (xt, yt) do Turtle, desenha um quadrado (célula) na posição"""
+
+    color(cor)
+    up()
+    goto(xt, yt) # para o desenho da celular deve ser declacarado a coordanada turtle;
+    down()
+    begin_fill()  # inicio do labirinto
+    for _ in range(4): # executa o desenho do quadrado;
+        forward(20)
+        left(90)
+
+    end_fill()
+    up()
+
+
+def em_coord_turtle(lin,col):
+
+    """Dada uma coordenada da matriz (i,j) transforma em coordenada Turtle"""
+
+    xt = (col - meio_matriz) * tam_celula # refere -se ao coluna da matriz
+    yt = (meio_matriz - lin) * tam_celula # refere -se a linha da matriz
+    print(xt, yt)
+
+    #retornara a cordenada turtle (-200, 200) para a celular (lin, col) = (0,0)
+
+
+    return xt, yt
+
+def main(): # esta funcao chama as declaracoes de funcoes criar labirinto;
+
+    criar_labirinto()
+
+    done()
+
+main()
+

@@ -1,0 +1,172 @@
+
+import turtle
+from turtle import *
+import numpy as np
+#from utils import floor
+from freegames import floor
+
+
+t = turtle.Screen()
+
+def ler_matriz_aleatoria():
+
+    return np.random.randint(2, size=(20, 20))
+
+
+# dados da matriz:
+
+matriz_alea = ler_matriz_aleatoria()
+dim_alea = len(matriz_alea)
+lin_alea = len(matriz_alea[:])
+col_alea = len(matriz_alea[:])
+meio_matriz = dim_alea // 2
+tam_celula = 20
+meio_celula = tam_celula // 2
+
+
+def criar_labirinto(p1=420, p2=420, p3=370, p4=0):
+
+    tracer(False)
+    hideturtle()
+    bgcolor("black")
+    t.setup(p1, p2, p3, p4)
+
+    for lin_alea in range(dim_alea):
+        for col_alea in range(dim_alea):
+            xt, yt = em_coord_turtle(lin_alea, col_alea)
+            if (matriz_alea[lin_alea][col_alea] == 1):
+
+                desenhar_celular(xt, yt, cor= "red")
+
+                desenhar_pastilha(xt, yt, cor= "white")
+
+
+
+    update()
+
+
+def desenhar_celular(xt, yt, cor):
+
+    color(cor)
+    up()
+    goto(xt, yt)
+    down()
+    begin_fill()
+    for _ in range(4):
+        forward(tam_celula)
+        left(90)
+
+    end_fill()
+    up()
+
+
+""" Funções de testes """
+
+
+def teste1_transf_coord_funcionou():
+    """ Testa as transformações de coordenadas """
+    for lin_alea in range(meio_matriz):
+        for col_alea in range(meio_matriz):
+            xt, yt = em_coord_turtle(lin_alea, col_alea)
+            if ( not (lin_alea, col_alea) == em_coord_matriz(xt, yt) ):
+                return False
+    return True
+
+
+def teste2_transf_coord_funcionou():
+    """ Testa as transformações de coordenadas """
+
+    n = meio_matriz * tam_celula * 10
+    for k1 in range(-n, n, 10):
+        for k2 in range(n, -n, -10):
+            xt = k1 / 10
+            yt = k2 / 10
+            chao_lin, chao_col = em_coord_matriz(xt, yt)
+            if (not chao_celular(xt, yt) == em_coord_turtle(chao_lin, chao_col) ):
+                return False
+    return True
+
+def testar_transf_de_coord():
+    """ Roda os testes de transformações de coordenadas """
+    if (teste1_transf_coord_funcionou() and \
+        teste2_transf_coord_funcionou()):
+        return "Todas as transformações de coordenadas funcionaram"
+    else:
+        return "As transformações de coordenadas não funcionaram"
+
+
+""" Funcoes de transformacoes de coordenadas"""
+
+def chao_celular(xt, yt):
+
+    chao_xt = int(floor(xt, tam_celula))
+    chao_yt = int(floor(yt, tam_celula))
+
+    return chao_xt, chao_yt
+
+
+def em_coord_turtle(lin_alea, col_alea):
+
+    xt = (col_alea - meio_matriz) * tam_celula
+    yt = (meio_matriz - lin_alea) * tam_celula
+
+    # print(xt, yt)
+    return xt, yt
+
+def em_coord_matriz(xt, yt):
+
+    xt, yt = chao_celular(xt, yt)
+    chao_lin = int(meio_matriz - (yt / tam_celula))
+    chao_col = int(meio_matriz + (xt / tam_celula))
+
+    return chao_lin, chao_col
+
+
+def adicionar_agente():
+
+    lin_alea, col_alea = celular_aleatoria()
+    xt, yt = em_coord_turtle(lin_alea, col_alea)
+    desenhar_agente(xt, yt, cor= "yellow")
+
+
+def celular_aleatoria():
+
+    lin_alea, col_alea = np.random.randint(dim_alea, size=(2))
+
+    while (not eh_caminho(lin_alea, col_alea) ==1):
+
+        lin_alea, col_alea = np.random.randint(dim_alea, size=(2))
+
+    return lin_alea, col_alea
+
+
+def eh_caminho(lin_alea, col_alea):
+
+    return matriz_alea[lin_alea][col_alea] == 1
+
+def desenhar_agente(xt, yt, cor):
+
+    up()
+    goto(xt + meio_celula, yt + meio_celula)
+    down()
+    dot(15, cor)
+
+
+def desenhar_pastilha (xt, yt, cor):
+
+    up()
+    goto(xt + meio_celula, yt + meio_celula)
+    down()
+    dot(3, cor)
+
+
+def main():
+
+    criar_labirinto()
+    adicionar_agente()
+
+    done()
+
+    print(testar_transf_de_coord())
+
+main()

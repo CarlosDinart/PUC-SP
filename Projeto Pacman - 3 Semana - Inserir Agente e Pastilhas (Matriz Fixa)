@@ -1,0 +1,341 @@
+# Passos:
+# 1. Criar labirinto;
+# 2. Inserir Pastilha;
+# 3. Adicionar Agente;
+import turtle
+from turtle import *
+#from utils import floor
+from freegames import floor
+import numpy as np
+
+t = turtle.Screen()
+
+""" Funções já implementadas """
+
+
+def ler_matriz_fixa():
+    """ Retorna uma matriz fixa """
+
+    return [[0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],\
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0]]
+
+
+# Dados da Matriz:
+
+matriz_fixa = ler_matriz_fixa()
+lin = len(matriz_fixa[:])
+col = len(matriz_fixa[:])
+dim = len(matriz_fixa)
+# print(lin)
+# print(col)
+# print(dim)
+meio = dim // 2
+tam_celula = 20
+meio_celula = tam_celula // 2
+
+
+# 1 passo:
+# criar garfico do labirinto
+
+def criar_labirinto(p1=420, p2=420, p3=370, p4=0):
+    tracer(False)
+    hideturtle()
+    bgcolor("black")
+    t.setup(p1, p2, p3, p4)  # Definir a janela do turtle (altura, largura)
+
+    # cada indice da linha da matriz menos o tamanho da matriz
+    for lin in range(dim):
+        # cada indice da coluna da matriz menos o tamanho da matriz = dim
+        for col in range(dim):
+            #print("coordenda indices da Matriz", (lin, col))
+            if (matriz_alea[lin][col] == 1):  # desenhara o labirinto o na matriz alaeatoria
+                # sicronizar coordenada dos indices da matriz com a cordenada turtle
+                xt, yt = em_coord_turtle(lin, col)
+                # definir para lin e col igual a 1 sera caminho
+
+
+                desenhar_celula(xt, yt, "blue")  # sendo caminho desenha a celuar
+
+                desenhar_pastilha(xt, yt, "white")
+
+    # Mostra as transformações na tela.
+    # Necessário porque o Tracer() está desligado
+    update()
+
+
+def desenhar_celula(xt, yt, cor):
+    color(cor)
+    up()
+    goto(xt, yt)
+    down()
+    begin_fill()
+    for _ in range(4):
+        forward(tam_celula)
+        left(90)
+
+    end_fill()
+    up()
+
+
+
+""" Funções de testes """
+
+
+
+def teste1_transf_coord_funcionou():
+    """ Testa as transformações de coordenadas """
+    for lin in range(dim):
+        for col in range(dim):
+            xt, yt = em_coord_turtle(lin, col)
+            if ( not (lin, col) == em_coord_matriz(xt, yt) ):
+                return False
+    return True
+
+def teste2_transf_coord_funcionou():
+    """ Testa as transformações de coordenadas """
+
+    n = meio * tam_celula * 10
+    for k1 in range(-n, n, 10):
+        for k2 in range(n, -n, -10):
+            xt = k1 / 10
+            yt = k2 / 10
+            lin, col = em_coord_matriz(xt, yt)
+            if (not chao_da_celula(xt, yt) == em_coord_turtle(lin, col) ):
+                return False
+    return True
+
+def testar_transf_de_coord():
+    """ Roda os testes de transformações de coordenadas """
+    if (teste1_transf_coord_funcionou() and \
+        teste2_transf_coord_funcionou()):
+        return "Todas as transformações de coordenadas funcionaram"
+    else:
+        return "As transformações de coordenadas não funcionaram"
+
+
+
+""" FUNCÕES DE TRANSFORMACOES DAS COORDENADAS """
+
+
+def chao_da_celula(xt, yt):
+
+    """Dadas coordenadas do Turtle (x,y), retorna as coordenadas do início de uma célula.
+        Por exemplo, na celula da origem com tamanho 20, a coordenada Turtle (10,10)
+        representa o meio da célula. A chamada de função 'chao_da_celula(10, 10)' retorna
+        as coordenadas de início dessa célula em coordanda Turtle  (0,0)
+        Dica: para entender, veja o exemplo da função: 'uso_do_floor()"""
+
+
+    chao_xt = int(floor(xt, tam_celula))
+    chao_yt = int(floor(yt, tam_celula))
+    #print(xt, yt)
+    #print(chao_xt, chao_yt)
+
+
+
+    #print("Dado Coordenadas turtle:",(xt, yt))
+    #print("traf-> turtle Chao celula:",(chao_xt, chao_yt))
+
+    return chao_xt, chao_yt
+
+
+def em_coord_turtle(lin, col):
+    """Dados os índices da matriz (lin, col), retorna as coordenadas do Turtle correspondentes.
+        Por exemplo, numa matriz quadrada de dimensão 20, com tamanho de célula 20,
+        a chamada de função 'em_coord_turtle(0,0)' deve retornar (-200,200) e a
+        chamada de função 'em_coord_turtle(10,10)' deve retornar (0,0)"""
+
+    xt = (col - meio) * tam_celula
+    yt = (meio - lin) * tam_celula
+
+    #print("Dados índices da matriz:", (lin, col))
+    #print("transf -> coordenda turtle:",(xt, yt))
+
+    return xt, yt
+
+
+def em_coord_matriz(xt, yt):
+    """Dada uma coordenada do Turtle (x,y), retorna os índices correspondentes da matriz
+       Por exemplo, numa matriz quadrada de dimensão 20, com tamanho de célula 20,
+        a chamada de função 'em_coord_matriz(-200, 200)' deve retornar os indices da matriz (0,0) e a
+        chamada de função 'em_coord_matriz(0, 0)' deve retornar retornar os indices da matriz (10,10).
+        Dica: utilize a função 'chao_da_celula(x, y)"""
+
+    xt, yt = chao_da_celula(xt, yt)
+    chao_lin = int(meio - (yt / tam_celula))
+    chao_col = int(meio + (xt / tam_celula))
+    #print(xt, yt)
+
+
+    #print("Para Coordenadas  Turtle:", (xt, yt))
+    #print("transf- indices matriz:", (lin, col))
+
+    return chao_lin, chao_col
+
+
+
+# 3. Passo: 4
+
+def adicionar_agente():
+    """Desenha o agente no labirinto onde pode ser caminho definido por 1 e nao e obstaculo"""
+
+    lin, col = cel_aleatoria()  # esta funcao gera um par de indices (lin, col)
+    # celula aleatoria, definida como caminho, cujo os indices referem a celula que contem 1;
+    xt, yt = em_coord_turtle(lin, col)  # esta funcao sicroniza as coordenadas tutle (200, - 220) com os
+    # indices da celula aleatoria que contem 1 - ex. (0,0) (0,1)...;
+    desenhar_agente(xt, yt, "yellow")  # desenha o agente na coordanda tuetle;
+
+    # return chao_lin,chao_col
+
+
+def ler_matriz_aleatoria(dim):
+    """"Retorna  na variavel da matriz uma matriz quadrada na dimensão especificada com números
+        aleatórios numeros entre (0's e 1's), objetivo criar caminhos para adcionar o agente;
+        Dica: utilize numpy.random.randint()"""
+
+    # Introducao de numeros aleatorios:
+    # Nunpy - O módulo numpy é muito útil para operações com arrays, vetores e matrizes, operardor ganha
+    # muito tempo e eficiencia com a simplicidade em inves de esta construindo algo mais demorarod e complexo
+    # Arry - I) E uma lista com os mesmo tipo de elementos ou e string ou e numero;
+    # II) Possibilita criar uma martiz em varais dimensoes: 1, 2 ou 3 D...
+    # Aplicacao para criar matriz do zero = nunpy.zeros((col, lin)), col = numeros de colunas
+    # lin = numeros de linhas, retornara uma matriz definida so por zeros ou outro numero;
+    # III) E possivel fazer operacoe entre duas listas atraves de vetores;
+
+    # IMPLEMENTE ESSA FUNÇÃO
+
+    # np.random.randint(2, size=(dim, dim)) #esta funcao defini a construcao de matrizes aleatorias que
+    # sao lambirinto constituido por diversas celulas
+    # aleatorias da matriz;
+
+    # np.random.randint(2, size=(dim, dim))
+
+    return np.random.randint(2, size=(dim, dim))
+
+    # dulvida: como faco para funcao radint gerar numeros aleatorios da matriz fixa?
+    # pesquisar!
+
+    # Obs: I) print(np.random.randint(matriz_fixa, size=(dim,dim)))
+    # nao vai funcionar por que matriz nao e um dado escalar;
+    # II) o dado de entrada do intervalo aleatorio tem que ser um int, nao podendo ser
+    # uma lista, dincionario ou uma tupla;
+    # III) o size e definido porq dim(dim = dimensao da matriz no eixo x e Y);
+
+
+# 3. Passo: 1
+def cel_aleatoria():
+    """Retorna uma tupla com dois índices das cordenadas da matriz (lin, col), escolhidos aleatorio
+    que poderiam ser retornados, estabelecendo um comando de condincao se resultado atender
+    a condicao da funcao eh caminho ([lin] [col] == 1)
+    Dica: utilize numpy.random.randint()"""
+
+    # IMPLEMENTE ESSA FUNÇÃO
+
+    lin, col = np.random.randint(dim, size=(2))  # obs: esta funcao defini a escolha de
+    # uma tupla com dois numeros (size =2), e aleatorios
+    # para os indices do intervalo da matriz (dimenssao) referente a celula;
+    while (not eh_caminho(lin, col) == 1):  # eh_caminho(lin, col) = matriz_fixa[lin] [col] == 1
+        # - esta funcao defini enquanto as coordenadas
+        # aleatorias que representam os indices das
+        # celulas que representam 0 ou 1 da matiz nao forem celula 1
+        # o comando while nao parar o randint de geras novos
+        # indices aleatorios;
+        # print(lin, col)
+
+        lin, col = np.random.randint(dim, size=(2))
+
+    return lin, col
+
+    # dulvida: como faco para radint da celula aleatoria gerar escolhas aleatorias de celuas
+    # na matriz aleatoria constituida na funcao da matriz aleatoria? Pesquisar solucao?
+
+
+# 3. Passo: 2
+def eh_caminho(lin, col):
+    """Dada uma matriz quadrada, retorna True quando (lin, col) == 1 e
+        False caso contrário.
+        Por exemplo, na matriz a seguir:
+        [[ 1  0  0 ]
+         [ 0  1  0 ]
+         [ 0  0  1 ]]
+        a chamada de função 'eh_caminho(0,0,matriz)' retorna True e
+        a chamada de função 'eh_caminho(0,1,matriz)' retorna False"""
+
+    # IMPLEMENTE ESSA FUNÇÃO
+
+    return matriz_alea[lin][col] == 1  # esta funcao defini que os indices das celulas
+    # escolhidos pelo celula aleatoria representam a
+    # a celula 1 da matriz, retornando que pode ser caminho
+    # e nao obstaculos para inserir o agente;
+
+
+# 3. Passo: 3
+def desenhar_agente(xt, yt, cor):
+    """Leva a tartaruga até a posição (x,y) e desenha por exemplo um círculo
+        para representar o agente (i.e., pacman, fantasmas)"""
+
+    # IMPLEMENTE ESSA FUNÇÃO
+
+    up()
+    goto(xt + meio_celula, yt + meio_celula)
+    down()
+    dot(15, cor)  # esta funcao defini atraves do ponto o desenho do agente;
+
+
+# 2 - Passo:
+def desenhar_pastilha(xt, yt, cor):
+    """ Leva a tartaruga até a posição (xt,yt) e desenha por exemplo um círculo
+        para representar a pastilha"""
+    # Obs: I) A patilha sera inserida no ponto de origem do desenhar celular, ou seja
+    # no ponto onde a tartaruga comecara a desenhar celular;
+    # II) A necessidade sera em centralizar a celular do ponto de origem para o meio da celula;
+    # III) Para centrelaizar devera somar o meio celular + xt da celular e meio celular + yt da celular
+    # para aumentar o ponto de origem e centralizar no meio da celula;
+    # IMPLEMENTE ESSA FUNÇÃO
+
+    # meio_celula = tam_celula //2  #chamo a funcao meio_celuar - definir o ponto do meio da celular;
+    # a divisao da centralizar celular sera uma divisao inteira sem resto;
+    up()
+    goto(xt + meio_celula, yt + meio_celula)  # esta funcao centralizar a celular somando os
+    # (xt, Yt) ao meio celular, retornara com insercao
+    # da pastilha ao meio da celular;
+    down()
+    dot(3, cor)  # dot(size = tamanho, cor) - defini o Desenhe um ponto circular com o tamanho do diâmetro
+    # , usando a cor . Se o tamanho não for fornecido, o máximo de pensize + 4 e 2 * pensize será usado.
+
+
+matriz_alea = ler_matriz_aleatoria(dim)
+print(matriz_alea)
+
+
+def main():
+
+    criar_labirinto()
+    adicionar_agente()
+
+    done()
+    """Utilize esse comando para testar se as trasnformações das coordenadas
+    # estão funcionando. Ao final da execução, o resultado deve ser que
+    # todas as transformações funcionaram"""
+    print(testar_transf_de_coord())
+
+
+main()

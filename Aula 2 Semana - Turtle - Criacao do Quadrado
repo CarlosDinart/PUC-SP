@@ -1,0 +1,22 @@
+from turtle import *
+
+# Modulo para Criacao do Quadrado
+def quadrado1 (lado):
+    forward(lado)  # forward - distancia da reta
+    left(90)  #left - desenho do angulo
+    forward(lado)
+    left(90)
+    forward(lado)
+    left(90)
+    forward(lado)
+    left(90)
+
+def quadrado2 (lado):
+    for i in range (4):
+        forward(lado)
+        left(90)
+
+quadrado1(300)
+quadrado2(70)
+
+done()

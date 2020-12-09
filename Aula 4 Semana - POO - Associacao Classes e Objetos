@@ -1,0 +1,44 @@
+# Associacao - e a relacao de duas mais classes onde ambas podem coversarem com a outra, porem elas
+# nao dependem uma da outra, ou seja, sao independentes em relacao a sua existencia;
+
+
+
+class Escritor:
+    def __init__(self, nome):            # __nome = este atributo e privado (__), nao pode ser acessado
+        self.__nome = nome
+        self.__ferramenta  = nome
+
+    # Getter                            # Definir que podemos acessar o atributo privado (__nome);
+    @property
+    def nome(self):
+        return self.__nome
+
+    # getter
+    @property
+    def ferramenta(self):
+        return self.__ferramenta
+
+    @ferramenta.setter
+    def ferramenta(self, ferramenta):
+        self.__ferramenta = ferramenta      # modifiquei o valor nome do atributo ferramenta privado
+                                            # que recebera o valor ferramenta
+
+
+class caneta:
+    def __init__(self, marca):
+        self.__marca = marca
+
+
+    # Getter                            # Definir que podemos acessar o atributo privado (__marca);
+    @property
+    def marca(self):
+        return self.__marca
+
+    def escrever(self):
+        print(" Caneta esta escrevendo.... !!")
+
+
+class maquina_escrever:
+
+    def escrever(self):
+        print(" Maquina esta escrevendo.... !!")

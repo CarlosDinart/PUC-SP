@@ -1,0 +1,274 @@
+import numpy as np
+
+s= [2,1,3,4,5,7,8,9,6,10.5,12,13,11,14,15,17,14,18.5,19,20.5]
+b = np.array(s).reshape(2,10)
+print(b)
+
+"""#1. Metodos de Array:
+print(b.ndim)
+print(b.shape)
+print(b.size)
+print(b.dtype)
+print(b.itemsize)
+print(b.data)
+print(len(b))
+print(b.astype(int))
+print(b.min(), b.max())
+print(b.argmin(), b.argmax())
+print(b.sum())
+print(b.mean())
+print(b.var())
+print(b.std())
+b.sort()
+print(b)
+c = b.reshape(2,2,5)
+print(c)
+print(b.ravel())"""
+
+"""#2.Criacao da Arry:
+
+#2.1. np.arrange():
+a = np.arange(0,20,2)
+print(a)
+
+#2.2.np.linspace():
+c = np.linspace(0,20,20)
+print(c)
+
+#2.2.np.ones():
+e = np.ones((3,7))
+print(e)
+
+#2.3.np.zeros():
+
+f= np.zeros((2,3))
+print(f)
+
+#2.4.np.eye():
+g = np.eye(4)
+print(g)
+
+#2.5.np.diag():
+
+h = np.diag([1,3,4,5])
+print(h)"""
+
+#2.6.np.rand():
+
+e = np.random.rand(10)
+print(e)
+
+print("============================")
+e1 = np.random.rand(3,2)
+print(e1)
+
+#2.6.np.randint():
+
+i = np.random.randint(10)
+print(i)
+
+i1 = np.random.randint(5,20, size= 10)
+print(i1)
+
+# obs: size = defini a quantidade de elementos retornando lista, porq nao tem o shape;
+
+i2 = np.random.randint(b, size = (2,10))
+print("Matriz aleatoria =====================================================")
+print(i2)
+
+# obs: I) size = defini o shape para estabelecer a estrura da matriz para os numeros aleatorios;
+      #II) O dado de entrada para gerar uma matriz alaeatoria podera ser qualquer matriz em indepente
+          #da dimensao;
+#2.7.np.choice():
+
+j = np.random.choice(10)
+print(j)
+
+#j1 = np.random.choice(b,(2,10))
+#print(np.array(j1))
+
+# obs: I) o segundo elemento defini o tamanho da lista dou da matriz, como foi definido em shape
+        #retornara a estrutura da matriz estabelecida;
+
+
+print("===========================================")
+
+#p = np.random.choice(s, size=(2,10), replace= False)
+#print(p.ndim)
+#print(np.array(p))
+
+#obs: I) O dado de entrada para gerar a escolha dos elementos da matriz tem q ser uma matriz 1D;
+    #II) nao pode alterar o fomanto ou a estrutura da matriz, para tante deverar usar a funcao
+    # alterar matriz reshape();
+    # replace = FALSE certifica-se de que nenhum elemento ocorre duas vezes.
+    # replace = Permitir que alguns elementos ocorram mais UMA VEZ;
+
+#2.8.np.dolt(): Multiplicacao entre matriz
+z = [34,33,35,38,39,40,41,42,43,44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54]
+l = np.dot(s, z)
+print(l)
+
+#2.8.np.equal():
+
+print(np.equal(b, p))
+
+#3.Índices, fatias e iteração:
+
+# 3.1 Unidimensional:
+t = np.array(z)
+print(t [19 -1])
+print(t [0:10:2])
+print(t [::-1])
+print(t [19 -1])
+for i in t:
+    print(i ** 2)
+
+
+
+#3.2. Multdiminsional:
+
+#3.2.1. - Acessando elemntos da matriz pelo indice;
+u = np.array(p)
+print(u)
+print(u[0,0])
+print(u[1,2])
+print(u[1,6])
+print(u[0,9])
+print(u[1,-1])
+
+#3.2.2. - Modificar os elementos da matriz pelo indice:
+
+u[0,0] = 12
+print(u)
+u[1,2] = 33
+print(u)
+
+print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+#3.2.3. - Submatriz multidimensional:
+
+u = np.array(p)
+print(u)
+
+print("==========================================================")
+
+
+
+print(u[:2, :3]) #para fatiar as vigulas definin [lin, col] ou [lin] [col]
+print(u[:2,5:8])
+print(u[:1, 4:9])
+print(u[:2, 2:9:2])
+print(u[::-1, ::-1])
+print(u[:,1])  #defini so as colunas;
+print(u[1,:])  #defini so as linhas;
+print("===============================================")
+
+#3.2.3. - Metodos copy array e subarray - alterando sem copia:
+
+z1 = [[34,33,35,38,39,40,41,42,43,44], [45, 46, 47, 48, 49, 50, 51, 52, 53, 54]]
+
+x2 = np.array(z1)
+print(x2)
+
+print("Submatriz x2 ==========================================================")
+x2_sub = x2[:2, 2:8]
+print(x2_sub)
+
+x2_sub[1,1] = 10
+print(x2_sub)
+
+print(x2) #obs: a submatriz uma vez alterada retornar alterando a matriz principal
+
+print("=======================================================================")
+
+#3.2.3. - Metodos copy array e subarray - alterando com copia:
+
+x2_sub_copy = x2[:2, 2:8].copy()
+print(x2_sub_copy)
+
+x2_sub_copy[1,1] = 99
+print(x2_sub_copy)
+
+print(x2) #obs: a submatriz uma vez alterada retornar sem alterar a matriz principal;
+
+
+#3.2.4. - Metodos copy array e array:
+import copy
+
+z5 = np.copy(x2) #copia todos elmentos da matriz - metodo numpy;
+
+print("Matiz copiada x2=", z5)
+
+print(np.equal(x2, z5))
+
+z6 = copy.deepcopy(x2) #copia todos os elemntos da matiz - metodo import copy;
+print("Matiz copiada x2=", z6)
+
+print(np.equal(x2, z6))
+
+#3.2.5. - Metodos concatenacao:
+
+
+
+print("Concatenate: x2, z5, z6 ===============================================")
+
+print(np.concatenate([x2, z5, z6]))
+
+
+print("Concatenate por linha: x2, z5, z6 =====================================")
+
+print(np.concatenate([x2, z5, z6], axis= 0)) #axis =0 defini concatencao por linha;
+
+print("Concatenate por coluna: x2, z5, z6 ====================================")
+
+print(np.concatenate([x2, z5, z6], axis= 1)) #axis =1 defini concatencao por coluna;
+
+
+print("Concatenate por funcao: mp.vstack - b, x2 =========================")
+
+t1 = np.vstack([b, x2]) #empilha vertical a matiz;
+print(t1)
+
+print("Concatenate por funcao: mp.hstack - b, x2 =============================")
+
+print(np.hstack([b, x2])) #empilha horizontal a matiz;
+
+
+print("Concatenate por funcao: mp.dstack - b, x2 =============================")
+
+print(np.dstack([b, x2])) #empilha a matriz ao oongo do terceiro eixo;
+
+
+#3.2.6. - Divisao de Matriz:
+
+
+print("Divisao de Matriz por funcao: split - (b, x2 ===========================")
+
+y1, y2, y3 = np.split(s, [3,5])
+print(y1, y2, y3)
+
+print("Divisao de Matriz por funcao: vsplit - (b, x2 ==========================")
+
+upper, lower = np.vsplit(t1, [2]) #divide a matriz na vertical;
+print(upper)                      #parte superior
+print()
+print(lower)                      #parte abaixo
+
+print("Divisao de Matriz por funcao: hsplit - (b, x2 ==========================")
+
+left, right = np.hsplit(t1, [2])  #divide  a matriz na horizontal;
+print(left)                       # parte esquerda
+print()
+print(lower)                      # parte direita
+
+
+#3.3. Mascaras: Retornara um arry boleano verdeiro ou falso para uma condicao;
+
+v1 = x2[x2 <= 3] #x2 e mascara do array
+print(x2 <= 3)
+print(x2)
+
+print("=======================================================================")
+
+#v2 = x2[x2 % 2 ==0]  #x2 e mascara do array
+#print(x2 % 2 ==0)
+#print(v2)

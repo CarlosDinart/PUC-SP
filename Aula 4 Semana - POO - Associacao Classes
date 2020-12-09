@@ -1,0 +1,21 @@
+from classes import Escritor
+from classes import caneta
+from classes import maquina_escr
+
+
+escritor = Escritor("Burro")
+#print(escritor.nome)
+
+Caneta = caneta("Peba")
+#print(Caneta.marca)
+
+maquina = maquina_escrever()
+#maquina.escrever()
+
+#Fazendo Associacao:
+escritor.ferramenta = Caneta   # Aqui associacao e gerada entre a classe escritor no atributo ferramenta com a classe caneta
+escritor.ferramenta.escrever() #aqui a metodo ferramenta esta associado a toda classe caneta, onde
+                               #determina para escritor escrever com a caneta;
+
+
+
